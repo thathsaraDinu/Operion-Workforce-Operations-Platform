@@ -20,7 +20,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/projects/{projectId}/members")
+@RequestMapping("/api/projects/{projectId}/members")
 @RequiredArgsConstructor
 @Tag(name = "Project Member Management", description = "Project member assignment and management endpoints")
 public class ProjectMemberController {

@@ -23,7 +23,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/leaves")
+@RequestMapping("/api/leaves")
 @RequiredArgsConstructor
 @Tag(name = "Leave Management", description = "Leave request and approval management endpoints")
 public class LeaveController {
