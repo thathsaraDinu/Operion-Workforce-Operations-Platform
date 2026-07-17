@@ -37,7 +37,7 @@ The API supports the following roles:
 
 Authenticate user and receive JWT token.
 
-**Endpoint:** `POST /auth/login`
+**Endpoint:** `POST /api/auth/login`
 
 **Request Body:**
 ```json
@@ -474,7 +474,7 @@ Retrieve all employees in a specific department.
 
 Record clock-in time for the authenticated employee.
 
-**Endpoint:** `POST /attendance/clock-in`
+**Endpoint:** `POST /api/attendance/clock-in`
 
 **Response (200):**
 ```json
@@ -499,7 +499,7 @@ Record clock-in time for the authenticated employee.
 
 Record clock-out time for the authenticated employee.
 
-**Endpoint:** `PATCH /attendance/clock-out`
+**Endpoint:** `PATCH /api/attendance/clock-out`
 
 **Response (200):**
 ```json
@@ -524,7 +524,7 @@ Record clock-out time for the authenticated employee.
 
 Retrieve attendance records for the authenticated employee.
 
-**Endpoint:** `GET /attendance/me`
+**Endpoint:** `GET /api/attendance/me`
 
 **Query Parameters:**
 - `page` - Page number (default: 0)
@@ -561,7 +561,7 @@ Retrieve attendance records for the authenticated employee.
 
 Retrieve all attendance records (admin/manager view).
 
-**Endpoint:** `GET /attendance`
+**Endpoint:** `GET /api/attendance`
 
 **Query Parameters:**
 - `page` - Page number (default: 0)
@@ -598,7 +598,7 @@ Retrieve all attendance records (admin/manager view).
 
 Retrieve attendance records for a specific employee.
 
-**Endpoint:** `GET /attendance/employee/{employeeId}`
+**Endpoint:** `GET /api/attendance/employee/{employeeId}`
 
 **Path Parameters:**
 - `employeeId` - Employee ID
@@ -638,7 +638,7 @@ Retrieve attendance records for a specific employee.
 
 Update attendance record (admin/HR only).
 
-**Endpoint:** `PUT /attendance/{attendanceId}`
+**Endpoint:** `PUT /api/attendance/{attendanceId}`
 
 **Path Parameters:**
 - `attendanceId` - Attendance record ID
@@ -676,7 +676,7 @@ Update attendance record (admin/HR only).
 
 Submit a new leave request.
 
-**Endpoint:** `POST /leaves`
+**Endpoint:** `POST /api/leaves`
 
 **Request Body:**
 ```json
@@ -715,7 +715,7 @@ Submit a new leave request.
 
 Retrieve leave requests for the authenticated employee.
 
-**Endpoint:** `GET /leaves/me`
+**Endpoint:** `GET /api/leaves/me`
 
 **Query Parameters:**
 - `page` - Page number (default: 0)
@@ -756,7 +756,7 @@ Retrieve leave requests for the authenticated employee.
 
 Retrieve a specific leave request by ID.
 
-**Endpoint:** `GET /leaves/{leaveRequestId}`
+**Endpoint:** `GET /api/leaves/{leaveRequestId}`
 
 **Path Parameters:**
 - `leaveRequestId` - Leave request ID
@@ -788,7 +788,7 @@ Retrieve a specific leave request by ID.
 
 Retrieve all leave requests (admin/manager view).
 
-**Endpoint:** `GET /leaves`
+**Endpoint:** `GET /api/leaves`
 
 **Query Parameters:**
 - `page` - Page number (default: 0)
@@ -829,7 +829,7 @@ Retrieve all leave requests (admin/manager view).
 
 Retrieve leave requests filtered by status.
 
-**Endpoint:** `GET /leaves/status/{status}`
+**Endpoint:** `GET /api/leaves/status/{status}`
 
 **Path Parameters:**
 - `status` - Leave status (PENDING|APPROVED|REJECTED)
@@ -873,7 +873,7 @@ Retrieve leave requests filtered by status.
 
 Update an existing leave request.
 
-**Endpoint:** `PUT /leaves/{leaveRequestId}`
+**Endpoint:** `PUT /api/leaves/{leaveRequestId}`
 
 **Path Parameters:**
 - `leaveRequestId` - Leave request ID
@@ -915,7 +915,7 @@ Update an existing leave request.
 
 Approve or reject a leave request.
 
-**Endpoint:** `PATCH /leaves/{leaveRequestId}/approval`
+**Endpoint:** `PATCH /api/leaves/{leaveRequestId}/approval`
 
 **Path Parameters:**
 - `leaveRequestId` - Leave request ID
@@ -954,7 +954,7 @@ Approve or reject a leave request.
 
 Delete a leave request.
 
-**Endpoint:** `DELETE /leaves/{leaveRequestId}`
+**Endpoint:** `DELETE /api/leaves/{leaveRequestId}`
 
 **Path Parameters:**
 - `leaveRequestId` - Leave request ID
@@ -971,7 +971,7 @@ Delete a leave request.
 
 Create a new project.
 
-**Endpoint:** `POST /projects`
+**Endpoint:** `POST /api/projects`
 
 **Request Body:**
 ```json
@@ -1006,7 +1006,7 @@ Create a new project.
 
 Retrieve a specific project by ID.
 
-**Endpoint:** `GET /projects/{id}`
+**Endpoint:** `GET /api/projects/{id}`
 
 **Path Parameters:**
 - `id` - Project ID
@@ -1033,7 +1033,7 @@ Retrieve a specific project by ID.
 
 Retrieve all projects with pagination.
 
-**Endpoint:** `GET /projects`
+**Endpoint:** `GET /api/projects`
 
 **Query Parameters:**
 - `page` - Page number (default: 0)
@@ -1069,7 +1069,7 @@ Retrieve all projects with pagination.
 
 Update project information.
 
-**Endpoint:** `PUT /projects/{id}`
+**Endpoint:** `PUT /api/projects/{id}`
 
 **Path Parameters:**
 - `id` - Project ID
@@ -1107,7 +1107,7 @@ Update project information.
 
 Delete a project by ID.
 
-**Endpoint:** `DELETE /projects/{id}`
+**Endpoint:** `DELETE /api/projects/{id}`
 
 **Path Parameters:**
 - `id` - Project ID
@@ -1124,7 +1124,7 @@ Delete a project by ID.
 
 Add an employee to a project.
 
-**Endpoint:** `POST /projects/{projectId}/members`
+**Endpoint:** `POST /api/projects/{projectId}/members`
 
 **Path Parameters:**
 - `projectId` - Project ID
@@ -1159,7 +1159,7 @@ Add an employee to a project.
 
 Retrieve all members of a specific project.
 
-**Endpoint:** `GET /projects/{projectId}/members`
+**Endpoint:** `GET /api/projects/{projectId}/members`
 
 **Path Parameters:**
 - `projectId` - Project ID
@@ -1198,7 +1198,7 @@ Retrieve all members of a specific project.
 
 Remove a member from a project.
 
-**Endpoint:** `DELETE /projects/{projectId}/members/{memberId}`
+**Endpoint:** `DELETE /api/projects/{projectId}/members/{memberId}`
 
 **Path Parameters:**
 - `projectId` - Project ID
@@ -1216,7 +1216,7 @@ Remove a member from a project.
 
 Create a new task.
 
-**Endpoint:** `POST /tasks`
+**Endpoint:** `POST /api/tasks`
 
 **Request Body:**
 ```json
@@ -1256,7 +1256,7 @@ Create a new task.
 
 Retrieve a specific task by ID.
 
-**Endpoint:** `GET /tasks/{id}`
+**Endpoint:** `GET /api/tasks/{id}`
 
 **Path Parameters:**
 - `id` - Task ID
@@ -1287,7 +1287,7 @@ Retrieve a specific task by ID.
 
 Retrieve all tasks with pagination.
 
-**Endpoint:** `GET /tasks`
+**Endpoint:** `GET /api/tasks`
 
 **Query Parameters:**
 - `page` - Page number (default: 0)
@@ -1327,7 +1327,7 @@ Retrieve all tasks with pagination.
 
 Update task information.
 
-**Endpoint:** `PUT /tasks/{id}`
+**Endpoint:** `PUT /api/tasks/{id}`
 
 **Path Parameters:**
 - `id` - Task ID
@@ -1368,7 +1368,7 @@ Update task information.
 
 Delete a task by ID.
 
-**Endpoint:** `DELETE /tasks/{id}`
+**Endpoint:** `DELETE /api/tasks/{id}`
 
 **Path Parameters:**
 - `id` - Task ID
@@ -1383,7 +1383,7 @@ Delete a task by ID.
 
 Retrieve all tasks for a specific project.
 
-**Endpoint:** `GET /tasks/project/{projectId}`
+**Endpoint:** `GET /api/tasks/project/{projectId}`
 
 **Path Parameters:**
 - `projectId` - Project ID
@@ -1426,7 +1426,7 @@ Retrieve all tasks for a specific project.
 
 Retrieve all tasks assigned to a specific employee.
 
-**Endpoint:** `GET /tasks/employee/{employeeId}`
+**Endpoint:** `GET /api/tasks/employee/{employeeId}`
 
 **Path Parameters:**
 - `employeeId` - Employee ID
@@ -1469,7 +1469,7 @@ Retrieve all tasks assigned to a specific employee.
 
 Retrieve tasks filtered by status.
 
-**Endpoint:** `GET /tasks/status/{status}`
+**Endpoint:** `GET /api/tasks/status/{status}`
 
 **Path Parameters:**
 - `status` - Task status (TODO|IN_PROGRESS|DONE)
