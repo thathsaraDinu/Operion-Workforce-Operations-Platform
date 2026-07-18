@@ -25,6 +25,7 @@ public class JwtService {
                 .subject(employee.getEmail())
                 .claim("employeeId", employee.getId())
                 .claim("role", employee.getRole().name())
+                .claim("passwordVersion", employee.getPasswordVersion())
                 .issuedAt(new Date())
                 .expiration(
                         new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 72)
@@ -79,10 +80,15 @@ public class JwtService {
     ){
 
         String username = extractUsername(token);
+        Integer tokenPasswordVersion = extractAllClaims(token).get("passwordVersion", Integer.class);
 
         return username.equals(employee.getEmail())
                 &&
-                !isTokenExpired(token);
+                !isTokenExpired(token)
+                &&
+                tokenPasswordVersion != null
+                &&
+                tokenPasswordVersion.equals(employee.getPasswordVersion());
     }
 
 

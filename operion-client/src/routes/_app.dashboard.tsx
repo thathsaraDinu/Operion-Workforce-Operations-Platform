@@ -371,10 +371,10 @@ function DashboardPage() {
                 Departments
               </Link>
               <Link
-                to="/profile"
+                to="/change-password"
                 className="rounded-lg border border-border/60 px-3 py-2 text-xs font-medium hover:border-primary/40 hover:bg-accent"
               >
-                My profile
+                Change password
               </Link>
             </div>
           </div>

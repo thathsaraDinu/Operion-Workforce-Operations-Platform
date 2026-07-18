@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -203,9 +203,14 @@ function LoginPage() {
                 </Button>
               </form>
 
-              <p className="mt-6 text-center text-xs text-muted-foreground">
-                Trouble signing in? Contact your administrator.
-              </p>
+              <div className="mt-6 text-center">
+                <Link
+                  to="/forgot-password"
+                  className="text-xs text-muted-foreground hover:text-primary hover:underline"
+                >
+                  Forgot your password?
+                </Link>
+              </div>
             </div>
 
             <p className="mt-6 text-center text-[11px] text-muted-foreground">

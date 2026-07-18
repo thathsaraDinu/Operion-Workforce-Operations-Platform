@@ -21,9 +21,6 @@ public class EmployeeUpdateRequest {
     @Schema(description = "Employee email address", example = "john.doe@example.com")
     private String email;
 
-    @Schema(description = "Employee password", example = "NewSecurePass123")
-    private String password;
-
     @Schema(description = "Employee role", example = "EMPLOYEE")
     private Role role;
 

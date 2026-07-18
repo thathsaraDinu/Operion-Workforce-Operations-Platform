@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,6 +45,16 @@ public class Employee extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     private EmployeeStatus status = EmployeeStatus.ACTIVE;
+
+    private String passwordResetToken;
+
+    private LocalDateTime passwordResetTokenExpiry;
+
+    private Integer passwordVersion = 1;
+
+    private Integer failedLoginAttempts = 0;
+
+    private LocalDateTime accountLockedUntil;
 
     @OneToMany(mappedBy = "employee")
     private List<ProjectMember> projectMembers = new ArrayList<>();

@@ -96,12 +96,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setEmail(request.getEmail());
         }
 
-        if (request.getPassword() != null) {
-            employee.setPassword(
-                    passwordEncoder.encode(request.getPassword())
-            );
-        }
-
         if (request.getRole() != null) {
             employee.setRole(request.getRole());
         }

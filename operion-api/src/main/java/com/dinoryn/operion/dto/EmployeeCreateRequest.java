@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,8 +30,9 @@ public class EmployeeCreateRequest {
     @NotBlank(message = "Email is required")
     private String email;
 
-    @Schema(description = "Employee password", example = "SecurePass123", required = true)
+    @Schema(description = "Employee password", example = "TempPass123", required = true)
     @NotBlank(message = "Password is required")
+    @Size(min = 6, message = "Password must be at least 6 characters")
     private String password;
 
     @Schema(description = "Employee role", example = "EMPLOYEE", required = true)

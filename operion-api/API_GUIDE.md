@@ -94,6 +94,99 @@ Authenticate user and receive JWT token.
 
 ---
 
+#### Forgot Password
+
+Request a password reset link via email.
+
+**Endpoint:** `POST /api/auth/forgot-password`
+
+**Request Body:**
+```json
+{
+  "email": "string (required, valid email)"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Password reset link sent to your email",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
+
+**Error Response (429):**
+```json
+{
+  "success": false,
+  "message": "Too many password reset requests. Please try again later.",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
+
+**Roles Required:** None (public endpoint, rate-limited: 3 requests per 15 minutes per email/IP)
+
+---
+
+#### Reset Password
+
+Reset password using the token received via email.
+
+**Endpoint:** `POST /api/auth/reset-password`
+
+**Request Body:**
+```json
+{
+  "token": "string (required)",
+  "newPassword": "string (required, min 8 chars, must contain uppercase, lowercase, number, and special character)"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Password reset successful",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
+
+**Roles Required:** None (public endpoint)
+
+---
+
+#### Change Password
+
+Change password when logged in.
+
+**Endpoint:** `POST /api/auth/change-password`
+
+**Request Body:**
+```json
+{
+  "currentPassword": "string (required)",
+  "newPassword": "string (required, min 8 chars, must contain uppercase, lowercase, number, and special character)"
+}
+```
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Password changed successfully",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
+
+**Roles Required:** All authenticated users
+
+---
+
 ### Employee Management
 
 #### Create Employee
@@ -108,7 +201,7 @@ Create a new employee account.
   "firstName": "string (required)",
   "lastName": "string (required)",
   "email": "string (required, valid email)",
-  "password": "string (required)",
+  "password": "string (required, min 6 chars - temporary password, employee will change it)",
   "role": "ADMIN|HR|MANAGER|EMPLOYEE (required)",
   "departmentId": "number (optional)",
   "phone": "string (optional)",
@@ -247,7 +340,6 @@ Update employee information (partial update).
   "firstName": "string (optional)",
   "lastName": "string (optional)",
   "email": "string (optional)",
-  "password": "string (optional)",
   "role": "ADMIN|HR|MANAGER|EMPLOYEE (optional)",
   "phone": "string (optional)",
   "address": "string (optional)",

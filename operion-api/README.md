@@ -12,6 +12,7 @@ A comprehensive workforce management API built with Spring Boot that provides em
 - **Task Management**: Assign and track tasks within projects
 - **Team Management**: Assign employees to projects with specific roles
 - **Authentication & Authorization**: JWT-based authentication with role-based access control
+- **Password Management**: Secure password reset and change functionality with industry-standard security
 - **API Documentation**: Interactive Swagger/OpenAPI documentation
 
 ## Technology Stack
@@ -121,6 +122,9 @@ All API endpoints return a consistent response structure:
 
 ### Authentication
 - `POST /api/auth/login` - Authenticate user and receive JWT token
+- `POST /api/auth/forgot-password` - Request password reset link (rate-limited)
+- `POST /api/auth/reset-password` - Reset password with token
+- `POST /api/auth/change-password` - Change password when authenticated
 
 ### Employees
 - `GET /api/employees` - Get all employees (paginated)
@@ -276,7 +280,13 @@ The project uses Lombok to reduce boilerplate code. Ensure you have the Lombok p
 - Use environment variables for sensitive configuration
 - Enable HTTPS in production
 - Regularly update dependencies
-- Implement rate limiting for API endpoints
+- Rate limiting implemented for password reset endpoints (3 requests per 15 minutes per email/IP)
+- Password complexity requirements for user-set passwords (minimum 8 characters, uppercase, lowercase, number, special character)
+- Temporary passwords set by HR have relaxed validation (minimum 6 characters)
+- Password history tracking to prevent reuse of passwords from the last year
+- Account lockout after 5 failed login attempts (30-minute lockout)
+- Session invalidation on password changes via password versioning
+- HR cannot update employee passwords after account creation (employees manage their own passwords)
 
 ## License
 

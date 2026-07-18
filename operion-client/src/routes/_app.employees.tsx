@@ -320,8 +320,8 @@ const editSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   email: z.string().email().optional().or(z.literal("")),
-  password: z.string().optional(),
   role: z.enum(["ADMIN", "HR", "MANAGER", "EMPLOYEE"]).optional(),
+  password: z.string().min(6, "At least 6 characters").optional().or(z.literal("")),
   phone: z.string().optional(),
   address: z.string().optional(),
   position: z.string().optional(),
@@ -363,12 +363,11 @@ function EditDialog({
       if (!employee) return;
       const payload: EmployeeUpdatePayload = {};
       (
-        ["firstName", "lastName", "email", "role", "phone", "address", "position", "joiningDate"] as const
+        ["firstName", "lastName", "email", "role", "phone", "address", "position", "joiningDate", "password"] as const
       ).forEach((k) => {
         const v = values[k];
         if (v !== undefined && v !== "") (payload as Record<string, unknown>)[k] = v;
       });
-      if (values.password) payload.password = values.password;
       await employeesApi.update(employee.id, payload);
       if (values.departmentId && Number(values.departmentId) !== employee.departmentId) {
         await employeesApi.assignDepartment(employee.id, Number(values.departmentId));
