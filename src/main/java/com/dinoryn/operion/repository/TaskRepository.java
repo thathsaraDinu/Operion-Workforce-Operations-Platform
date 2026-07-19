@@ -24,4 +24,12 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
             TaskStatus status,
             Pageable pageable
     );
+
+    long count();
+
+    long countByStatus(TaskStatus status);
+
+    long countByAssignedEmployeeId(Long employeeId);
+
+    long countByAssignedEmployeeIdAndStatus(Long employeeId, TaskStatus status);
 }

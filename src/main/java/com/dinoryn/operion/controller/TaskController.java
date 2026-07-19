@@ -84,8 +84,8 @@ public class TaskController {
 
 
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
-    @PutMapping("/{id}")
-    @Operation(summary = "Update task", description = "Update task information. Requires ADMIN, HR, or MANAGER role.")
+    @PatchMapping("/{id}")
+    @Operation(summary = "Update task", description = "Update task information (partial update). Requires ADMIN, HR, or MANAGER role.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Task updated successfully"),
             @ApiResponse(responseCode = "404", description = "Task not found"),

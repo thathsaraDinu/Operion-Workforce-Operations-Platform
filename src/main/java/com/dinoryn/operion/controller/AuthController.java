@@ -5,6 +5,7 @@ import com.dinoryn.operion.dto.ChangePasswordRequest;
 import com.dinoryn.operion.dto.ForgotPasswordRequest;
 import com.dinoryn.operion.dto.LoginRequest;
 import com.dinoryn.operion.dto.LoginResponse;
+import com.dinoryn.operion.dto.ProfileResponse;
 import com.dinoryn.operion.dto.ResetPasswordRequest;
 import com.dinoryn.operion.entity.Employee;
 import com.dinoryn.operion.repository.EmployeeRepository;
@@ -108,6 +109,33 @@ public class AuthController {
         authService.changePassword(employeeUserDetails.employee().getId(), request);
         return ResponseEntity.ok(
                 ApiResponseBody.success(null, "Password changed successfully")
+        );
+    }
+
+    @GetMapping("/me")
+    @Operation(summary = "Get current user profile", description = "Get the authenticated user's profile information")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Profile retrieved successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ApiResponseBody<ProfileResponse>> getProfile(
+            @AuthenticationPrincipal EmployeeUserDetails employeeUserDetails
+    ){
+        Employee employee = employeeUserDetails.employee();
+        ProfileResponse profile = new ProfileResponse(
+                employee.getId(),
+                employee.getEmail(),
+                employee.getRole().name(),
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getDepartment() != null ? employee.getDepartment().getId() : null,
+                employee.getDepartment() != null ? employee.getDepartment().getName() : null,
+                employee.getPosition(),
+                employee.getPhone()
+        );
+        return ResponseEntity.ok(
+                ApiResponseBody.success(profile, "Profile retrieved successfully")
         );
     }
 

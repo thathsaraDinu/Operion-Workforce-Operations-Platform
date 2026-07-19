@@ -59,6 +59,72 @@ The API supports the following roles:
 
 ## API Endpoints
 
+### Dashboard
+
+#### Get Dashboard Statistics
+
+Retrieve role-appropriate dashboard statistics based on the authenticated user's role.
+
+**Endpoint:** `GET /api/dashboard`
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Dashboard statistics retrieved successfully",
+  "data": {
+    "totalEmployees": "number (ADMIN, HR)",
+    "totalDepartments": "number (ADMIN, HR)",
+    "totalProjects": "number (ADMIN, HR)",
+    "totalTasks": "number (ADMIN)",
+    "pendingLeaveRequests": "number (ADMIN, HR)",
+    "activeProjects": "number (ADMIN, HR)",
+    "completedTasks": "number (ADMIN)",
+    "employeesOnLeaveToday": "number (ADMIN, HR)",
+    "myProjects": "number (MANAGER)",
+    "myTasks": "number (MANAGER)",
+    "myActiveProjects": "number (MANAGER)",
+    "myCompletedTasks": "number (MANAGER)",
+    "teamPendingLeaves": "number (MANAGER)",
+    "teamOnLeaveToday": "number (MANAGER)",
+    "myPendingLeaves": "number (EMPLOYEE)",
+    "myCompletedTasksEmployee": "number (EMPLOYEE)",
+    "date": "date (YYYY-MM-DD)",
+    "recentAttendance": [
+      {
+        "id": "number",
+        "date": "date (YYYY-MM-DD)",
+        "clockIn": "datetime (ISO-8601)",
+        "clockOut": "datetime (ISO-8601)",
+        "status": "PRESENT|ABSENT|LATE|HALF_DAY",
+        "employeeName": "string"
+      }
+    ],
+    "recentLeaves": [
+      {
+        "id": "number",
+        "employeeName": "string",
+        "leaveType": "ANNUAL|SICK|CASUAL|MATERNITY|UNPAID",
+        "startDate": "date (YYYY-MM-DD)",
+        "endDate": "date (YYYY-MM-DD)",
+        "status": "PENDING|APPROVED|REJECTED"
+      }
+    ]
+  },
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
+
+**Roles Required:** All authenticated users
+
+**Role-specific data:**
+- **ADMIN**: Full organization statistics (employees, departments, projects, tasks, leaves, attendance)
+- **HR**: HR-focused statistics (employees, departments, projects, leaves, attendance)
+- **MANAGER**: Team-focused statistics (my projects, my tasks, team leaves, team attendance)
+- **EMPLOYEE**: Personal statistics (my leaves, my tasks, my attendance)
+
+---
+
 ### Authentication
 
 #### Login
@@ -91,6 +157,36 @@ Authenticate user and receive JWT token.
 ```
 
 **Roles Required:** None (public endpoint)
+
+---
+
+#### Get Current User Profile
+
+Get the authenticated user's profile information.
+
+**Endpoint:** `GET /api/auth/me`
+
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Profile retrieved successfully",
+  "data": {
+    "id": "number (employee ID)",
+    "email": "string (employee email)",
+    "role": "string (user role: ADMIN|HR|MANAGER|EMPLOYEE)",
+    "firstName": "string",
+    "lastName": "string",
+    "departmentId": "number (nullable)",
+    "departmentName": "string (nullable)",
+    "position": "string (nullable)",
+    "phone": "string (nullable)"
+  },
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
+
+**Roles Required:** All authenticated users
 
 ---
 
@@ -553,7 +649,7 @@ Retrieve a specific department by ID.
 
 Update department information.
 
-**Endpoint:** `PUT /api/departments/{id}`
+**Endpoint:** `PATCH /api/departments/{id}`
 
 **Path Parameters:**
 - `id` - Department ID
@@ -1172,6 +1268,11 @@ Approve or reject a leave request.
 
 **Roles Required:** ADMIN, HR, MANAGER
 
+**Business Rules:**
+- Only pending leave requests can be approved or rejected
+- A user cannot approve or reject their own leave request (even if they have the required role)
+- If a user attempts to approve their own request, the API will return an error with the message: "You cannot approve or reject your own leave request."
+
 ---
 
 #### Delete Leave Request
@@ -1183,9 +1284,17 @@ Delete a leave request.
 **Path Parameters:**
 - `leaveRequestId` - Leave request ID
 
-**Response (204):** No content
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Leave request deleted successfully",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
 
-**Roles Required:** All authenticated users (own requests only)
+**Roles Required:** All authenticated users (own pending requests only)
 
 ---
 
@@ -1222,7 +1331,7 @@ Create a new project.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1323,7 +1432,7 @@ Update project information.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1336,9 +1445,17 @@ Delete a project by ID.
 **Path Parameters:**
 - `id` - Project ID
 
-**Response (204):** No content
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Project deleted successfully",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
 
-**Roles Required:** ADMIN, HR
+**Roles Required:** ADMIN
 
 ---
 
@@ -1428,7 +1545,15 @@ Remove a member from a project.
 - `projectId` - Project ID
 - `memberId` - Project member ID
 
-**Response (204):** No content
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Member removed successfully",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
 
 **Roles Required:** ADMIN, HR, MANAGER
 
@@ -1472,7 +1597,7 @@ Create a new task.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1543,15 +1668,15 @@ Retrieve all tasks with pagination.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
 #### Update Task
 
-Update task information.
+Update task information (partial update). Only include fields that need to be changed.
 
-**Endpoint:** `PUT /api/tasks/{id}`
+**Endpoint:** `PATCH /api/tasks/{id}`
 
 **Path Parameters:**
 - `id` - Task ID
@@ -1584,7 +1709,7 @@ Update task information.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1597,9 +1722,17 @@ Delete a task by ID.
 **Path Parameters:**
 - `id` - Task ID
 
-**Response (204):** No content
+**Response (200):**
+```json
+{
+  "success": true,
+  "message": "Task deleted successfully",
+  "data": null,
+  "timestamp": "2024-01-15T10:30:00"
+}
+```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1642,7 +1775,7 @@ Retrieve all tasks for a specific project.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER, EMPLOYEE
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1685,7 +1818,7 @@ Retrieve all tasks assigned to a specific employee.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 
@@ -1728,7 +1861,7 @@ Retrieve tasks filtered by status.
 }
 ```
 
-**Roles Required:** ADMIN, HR, MANAGER
+**Roles Required:** ADMIN, MANAGER
 
 ---
 

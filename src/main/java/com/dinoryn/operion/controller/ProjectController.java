@@ -119,7 +119,7 @@ public class ProjectController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete project", description = "Delete a project by ID. Requires ADMIN or HR role.")
     @ApiResponses(value = {

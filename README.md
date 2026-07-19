@@ -11,6 +11,7 @@ A comprehensive workforce management API built with Spring Boot that provides em
 - **Project Management**: Create and manage projects with status tracking
 - **Task Management**: Assign and track tasks within projects
 - **Team Management**: Assign employees to projects with specific roles
+- **Dashboard**: Role-appropriate dashboard statistics for quick overview (ADMIN, HR, MANAGER, EMPLOYEE)
 - **Authentication & Authorization**: JWT-based authentication with role-based access control
 - **Password Management**: Secure password reset and change functionality with industry-standard security
 - **API Documentation**: Interactive Swagger/OpenAPI documentation
@@ -120,8 +121,12 @@ All API endpoints return a consistent response structure:
 
 ## API Endpoints
 
+### Dashboard
+- `GET /api/dashboard` - Get role-appropriate dashboard statistics (all authenticated users)
+
 ### Authentication
 - `POST /api/auth/login` - Authenticate user and receive JWT token
+- `GET /api/auth/me` - Get current user profile (authenticated users)
 - `POST /api/auth/forgot-password` - Request password reset link (rate-limited)
 - `POST /api/auth/reset-password` - Reset password with token
 - `POST /api/auth/change-password` - Change password when authenticated
@@ -157,7 +162,7 @@ All API endpoints return a consistent response structure:
 - `GET /api/leaves` - Get all leave requests (ADMIN, HR, MANAGER)
 - `GET /api/leaves/status/{status}` - Get leave requests by status (ADMIN, HR, MANAGER)
 - `PUT /api/leaves/{id}` - Update leave request (own pending requests only)
-- `PATCH /api/leaves/{id}/approval` - Approve/Reject leave request (ADMIN, HR, MANAGER)
+- `PATCH /api/leaves/{id}/approval` - Approve/Reject leave request (ADMIN, HR, MANAGER) - **Cannot approve own requests**
 - `DELETE /api/leaves/{id}` - Delete leave request (own pending requests only)
 
 ### Projects
@@ -176,7 +181,7 @@ All API endpoints return a consistent response structure:
 - `GET /api/tasks` - Get all tasks (ADMIN, MANAGER)
 - `GET /api/tasks/{id}` - Get task by ID (all authenticated users)
 - `POST /api/tasks` - Create new task (ADMIN, MANAGER)
-- `PUT /api/tasks/{id}` - Update task (ADMIN, MANAGER)
+- `PATCH /api/tasks/{id}` - Update task (partial update) (ADMIN, MANAGER)
 - `DELETE /api/tasks/{id}` - Delete task (ADMIN, MANAGER)
 - `GET /api/tasks/project/{projectId}` - Get tasks by project (all authenticated users)
 - `GET /api/tasks/employee/{employeeId}` - Get tasks by employee (ADMIN, MANAGER)

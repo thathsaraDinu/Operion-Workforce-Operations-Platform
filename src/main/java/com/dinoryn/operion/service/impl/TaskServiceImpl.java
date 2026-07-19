@@ -93,10 +93,18 @@ public class TaskServiceImpl implements TaskService {
                 .orElseThrow(() -> new TaskNotFoundException(id));
 
 
-        task.setTitle(request.getTitle());
-        task.setDescription(request.getDescription());
-        task.setPriority(request.getPriority());
-        task.setStatus(request.getStatus());
+        if (request.getTitle() != null) {
+            task.setTitle(request.getTitle());
+        }
+        if (request.getDescription() != null) {
+            task.setDescription(request.getDescription());
+        }
+        if (request.getPriority() != null) {
+            task.setPriority(request.getPriority());
+        }
+        if (request.getStatus() != null) {
+            task.setStatus(request.getStatus());
+        }
 
 
         Task updatedTask = taskRepository.save(task);

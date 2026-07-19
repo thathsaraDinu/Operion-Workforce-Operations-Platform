@@ -94,7 +94,7 @@ public class AttendanceController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'MANAGER')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
     @GetMapping
     @Operation(summary = "Get all attendance", description = "Retrieve all attendance records (admin/manager view). Requires ADMIN, HR, or MANAGER role.")
     @ApiResponses(value = {

@@ -23,4 +23,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Optional<Employee> findByEmail(String email);
 
     Optional<Employee> findByPasswordResetToken(String token);
+
+    long count();
 }

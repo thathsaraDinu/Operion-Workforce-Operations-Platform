@@ -124,6 +124,16 @@ public class LeaveServiceImpl implements LeaveService {
                                 new LeaveRequestNotFoundException(leaveRequestId));
 
 
+        if (leaveRequest.getEmployee()
+                .getId()
+                .equals(approvalUser.getId())) {
+
+            throw new InvalidLeaveRequestException(
+                    "You cannot approve or reject your own leave request."
+            );
+        }
+
+
         if (leaveRequest.getStatus() != LeaveStatus.PENDING) {
 
             throw new InvalidLeaveRequestException(
