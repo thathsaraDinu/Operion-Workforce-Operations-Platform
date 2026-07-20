@@ -15,6 +15,27 @@ jobs:
 
     runs-on: ubuntu-latest
 
+
+    services:
+      mysql:
+        image: mysql:8
+
+        env:
+          MYSQL_DATABASE: operion
+          MYSQL_USER: admin
+          MYSQL_PASSWORD: 123123
+          MYSQL_ROOT_PASSWORD: root
+
+        ports:
+          - 3306:3306
+
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+
     steps:
 
       - name: Checkout repository
@@ -34,6 +55,11 @@ jobs:
 
       - name: Run tests
         run: ./mvnw test
+        env:
+          DB_URL: jdbc:mysql://localhost:3306/operion
+          DB_USERNAME: admin
+          DB_PASSWORD: 123123
+          JWT_SECRET: ZHVtbXktc2VjcmV0LWtleS1mb3ItdGVzdGluZy0zMjIzMjMyMzIzMjMyMzI=
 
 
       - name: Build application
